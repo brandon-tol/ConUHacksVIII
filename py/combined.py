@@ -176,8 +176,16 @@ def calculate_wait_time(time: int, day: Day, killer: bool, partySize: int, serve
     weight_tuple = get_absolute_correlations('parsed_data.csv', 'QueueDuration')
     current = Entry(None, 10800, Day.SATURDAY, 0, 2, Server.EU_CENTRAL_2, Platform.STEAM, None, MatchmakingOutcome.SUCCESS, 8, None)
     sortingKey = lambda element: getNodeDistance(*weight_tuple, current, element)
-    entryList.sort(key=sortingKey)
-    return (entryList[0].queueDuration)
+    
+    closestNeighbour = None
+    maxDistance = math.inf
+    for node in entryList:
+        x = sortingKey(node)
+        if x < maxDistance:
+            closestNeighbour = node
+            maxDistance = x
+
+    return (closestNeighbour.queueDuration)
 
 if __name__ == "__main__":
     print(calculate_wait_time(10800, Day.SATURDAY, False, 2, Server.EU_CENTRAL_2, Platform.STEAM, MatchmakingOutcome.SUCCESS, 8, None))
