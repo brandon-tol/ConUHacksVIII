@@ -57,7 +57,7 @@ class Entry:
     matchId: str
     startTime: int
     dayOfWeek: Day
-    role: bool
+    role: int
     partySize: int
     server: Server
     platform: Platform
@@ -86,6 +86,6 @@ def parse(filename: str):
         for line in file:
             arr = line.upper().split(',')
             time = arr[1].split(':')
-            entrylist.append(Entry(arr[0], int(time[0]) * 3600 + int(time[1]) * 60 + int(time[2]), Day.fromStr(arr[2]), arr[3] == "KILLER", int(arr[4]), Server(arr[5]), Platform(arr[6]), int(arr[7]), MatchmakingOutcome(arr[8]), int(arr[9]), arr[10]))
+            entrylist.append(Entry(arr[0], int(time[0]) * 3600 + int(time[1]) * 60 + int(time[2]), Day.fromStr(arr[2]), 1 if arr[3] == "KILLER" else 0, int(arr[4]), Server(arr[5]), Platform(arr[6]), int(arr[7]), MatchmakingOutcome(arr[8]), int(arr[9]), arr[10]))
     
     return entrylist
